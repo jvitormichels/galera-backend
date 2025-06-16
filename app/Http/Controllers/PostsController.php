@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 use App\Http\Resources\PostResource;
@@ -31,19 +32,23 @@ class PostsController extends Controller
         return new PostResource($post);
     }
 
-    // public function index()
-    // {
-    //     $posts = Post::with('user')->get();
-        
-    //     return PostResource::collection($posts);
-    // }
+    public function userPosts(User $user)
+    {
+        $posts = $user->posts()
+            ->latest()
+            ->paginate()
+            ->through(function ($post) use ($user) {
+                $post->setRelation('user', $user);
+                return $post;
+            });
+
+        return PostResource::collection($posts);
+    }
 
     public function destroy(Post $post)
     {
         $post->delete();
 
-        return response()->json([
-            'message' => "Post deleted"
-        ], 204);
+        return response()->noContent();
     }
 }
