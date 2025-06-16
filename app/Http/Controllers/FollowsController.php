@@ -5,8 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 
+use App\Http\Resources\UserResource;
+
 class FollowsController extends Controller
 {
+    public function followers(User $user)
+    {
+        $followers = $user->followers;
+        return UserResource::collection($followers);
+    }
+
+    public function following(User $user)
+    {
+        $following = $user->following;
+        return UserResource::collection($following);
+    }
+
     public function store(User $user)
     {
         if (auth()->id() === $user->id) {
