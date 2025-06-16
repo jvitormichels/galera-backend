@@ -25,3 +25,10 @@ Route::prefix('posts')->group(function () {
         Route::delete('/{post}', [PostsController::class, 'destroy']);
     });
 });
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::prefix('users/{user}')->namespace('App\Http\Controllers')->group(function () {
+        Route::post('/follow', 'FollowsController@store')->name('follow');
+        Route::delete('/follow', 'FollowsController@destroy')->name('unfollow');
+    });
+});
