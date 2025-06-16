@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\Hash;
 
+use App\Http\Resources\PostResource;
+
 class PostsController extends Controller
 {
     public function store(Request $request)
@@ -18,12 +20,30 @@ class PostsController extends Controller
         $post = $user->posts()->create($request->only('text'));
 
         return response()->json([
-            'message' => $post,
+            $post,
         ], 201);
     }
 
-    public function show(Post $post)
+    public function show($id)
     {
-        return response()->json($post, 200);
+        $post = Post::with('user')->findOrFail($id);
+        
+        return new PostResource($post);
+    }
+
+    public function index()
+    {
+        $posts = Post::with('user')->get();
+        
+        return PostResource::collection($posts);
+    }
+
+    public function destroy(Post $post)
+    {
+        $post->delete();
+
+        return response()->json([
+            'message' => "Post deleted"
+        ], 204);
     }
 }
