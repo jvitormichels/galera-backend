@@ -31,12 +31,12 @@ class PostsController extends Controller
         return new PostResource($post);
     }
 
-    public function index()
-    {
-        $posts = Post::with('user')->get();
+    // public function index()
+    // {
+    //     $posts = Post::with('user')->get();
         
-        return PostResource::collection($posts);
-    }
+    //     return PostResource::collection($posts);
+    // }
 
     public function destroy(Post $post)
     {
