@@ -27,7 +27,7 @@ class PostsController extends Controller
 
     public function show($id)
     {
-        $post = Post::with('user')->findOrFail($id);
+        $post = Post::with(['user', 'comments.user'])->findOrFail($id);
         
         return new PostResource($post);
     }
