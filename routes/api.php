@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     UserAuthController,
     PostsController,
-    FollowsController
+    FollowsController,
+    UsersController
 };
 
 
@@ -24,6 +25,12 @@ Route::prefix('posts')->group(function () {
         Route::get('/', [PostsController::class, 'timeline']);
         Route::post('/', [PostsController::class, 'store']);
         Route::delete('/{post}', [PostsController::class, 'destroy']);
+    });
+});
+
+Route::prefix('users')->group(function () {
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::put('/', [UsersController::class, 'update']);
     });
 });
 
