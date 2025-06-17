@@ -45,6 +45,18 @@ class PostsController extends Controller
         return PostResource::collection($posts);
     }
 
+    public function timeline()
+    {
+        $posts = Post::whereHas('user.followers', function ($query) {
+                $query->where('follower_id', auth()->id());
+            })
+            ->with('user')
+            ->latest()
+            ->get();
+
+        return PostResource::collection($posts);
+    }
+
     public function destroy(Post $post)
     {
         $post->delete();

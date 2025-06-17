@@ -21,7 +21,7 @@ Route::prefix('posts')->group(function () {
     Route::get('/{post}', [PostsController::class, 'show']);
 
     Route::middleware('auth:sanctum')->group(function () {
-        // Route::get('/', [PostsController::class, 'index']);
+        Route::get('/', [PostsController::class, 'timeline']);
         Route::post('/', [PostsController::class, 'store']);
         Route::delete('/{post}', [PostsController::class, 'destroy']);
     });
