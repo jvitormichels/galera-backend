@@ -32,4 +32,16 @@ class CommentsController extends Controller
 
         return response()->json($comments);
     }
+
+    public function destroy(Post $post, Comment $comment)
+    {
+        if ($comment->user_id !== auth()->id()) {
+            return response()->json([
+                'error' => 'You can only delete your own comments',
+            ], 403);
+        }
+
+        $comment->delete();
+        return response()->noContent();
+    }
 }

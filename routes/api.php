@@ -48,5 +48,6 @@ Route::prefix('posts')->group(function () {
         Route::delete('/{post}', [PostsController::class, 'destroy']);
         
         Route::post('/{post}/comments', [CommentsController::class, 'store']);
+        Route::delete('/{post}/comments/{comment}', [CommentsController::class, 'destroy'])->scopeBindings();;
     });
 });
